@@ -84,7 +84,9 @@ function K.start()
     local player = getPlayer()
     if not player then return end
     local store = ModData.getOrCreate("KnoxQuest")
-    if next(store)==nil then
+    local empty=true
+    for _ in pairs(store) do empty=false;break end
+    if empty then
         store.saveVersion, store.world, store.characters = 1, K.newState(), {}
     end
     if store.saveVersion~=1 or not K.validateState(store.world) or type(store.characters)~="table" then

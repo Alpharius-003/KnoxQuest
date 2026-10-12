@@ -119,6 +119,7 @@ class LuaCoreTests(unittest.TestCase):
 
     def test_runtime_inventory_and_identity(self):
         self.run_lua('''
+            next=nil -- PZ's Kahlua does not expose Lua 5.1's global next().
             Events=setmetatable({}, {__index=function(t,k) local v={Add=function() end};rawset(t,k,v);return v end})
             store={};ModData={getOrCreate=function() return store end}
             function isClient() return false end;function isServer() return false end

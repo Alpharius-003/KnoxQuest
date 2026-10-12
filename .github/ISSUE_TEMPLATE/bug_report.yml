@@ -1,0 +1,26 @@
+name: Bug report / 问题反馈
+description: Report a reproducible quest or UI problem.
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Game and Knox Quest versions / 游戏与模组版本
+      placeholder: Build 42.21.x, Knox Quest 0.1.0-alpha.1
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps, expected result and actual result / 复现步骤与结果
+      description: Include the quest ID and whether this is a new or existing save.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Enabled quest packs and relevant mods / 相关任务包与模组
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log excerpt / 相关日志片段
+      description: Paste only the relevant KnoxQuest lines. Remove usernames, private paths and identifiers; do not upload your full game directory or save.

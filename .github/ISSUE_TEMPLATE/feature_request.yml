@@ -1,0 +1,17 @@
+name: Feature request / 功能建议
+description: Suggest a quest capability, adapter or authoring improvement.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What player or author problem should this solve? / 想解决什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior and alternatives / 预期行为与替代方案
+  - type: input
+    id: dependency
+    attributes:
+      label: Relevant mod link, if any / 相关模组链接（如有）
