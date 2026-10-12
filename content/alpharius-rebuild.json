@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "packId": "alpharius_rebuild",
+  "packVersion": "0.1.0",
+  "title": "诺克斯重建手册：核心任务链原型",
+  "chapters": [
+    {
+      "id": "alpharius_rebuild:intro",
+      "title": "最后一本手册"
+    },
+    {
+      "id": "alpharius_rebuild:home",
+      "title": "今晚住这里"
+    },
+    {
+      "id": "alpharius_rebuild:outage",
+      "title": "第十四天之前"
+    },
+    {
+      "id": "alpharius_rebuild:transport",
+      "title": "道路重新开放"
+    },
+    {
+      "id": "alpharius_rebuild:rv",
+      "title": "带着家出发"
+    },
+    {
+      "id": "alpharius_rebuild:engineering",
+      "title": "成为维修工程师"
+    },
+    {
+      "id": "alpharius_rebuild:power",
+      "title": "让灯重新亮起"
+    },
+    {
+      "id": "alpharius_rebuild:water",
+      "title": "水重新流动"
+    },
+    {
+      "id": "alpharius_rebuild:life",
+      "title": "这里仍有生活"
+    }
+  ],
+  "quests": [
+    {
+      "id": "alpharius_rebuild:welcome",
+      "chapterId": "alpharius_rebuild:intro",
+      "title": "重建从这里开始",
+      "description": "了解据点、运输和永久水电目标。章节提供推荐路线，可以提前探索；本任务为手动确认。",
+      "scope": "world",
+      "dependsOn": [],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "read",
+          "type": "manual",
+          "prompt": "我已了解重建路线。"
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:basic_tools",
+      "chapterId": "alpharius_rebuild:home",
+      "title": "工具握在手里",
+      "description": "在角色背包或随身容器中携带一把锤子或螺丝刀。任务自动检查，不扣除工具。附近地面、车辆和家具容器不计入。",
+      "scope": "character",
+      "dependsOn": [
+        "alpharius_rebuild:welcome"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "carry",
+          "type": "item",
+          "items": [
+            "Base.Hammer",
+            "Base.Screwdriver"
+          ],
+          "count": 1
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:first_aid",
+      "chapterId": "alpharius_rebuild:home",
+      "title": "给意外留一点余地",
+      "description": "在背包或随身容器中准备两份绷带或碎布条，种类可以混合。自动检测当前持有数量，不消耗物品。",
+      "scope": "character",
+      "dependsOn": [
+        "alpharius_rebuild:welcome"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "carry",
+          "type": "item",
+          "items": [
+            "Base.Bandage",
+            "Base.RippedSheets"
+          ],
+          "count": 2
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:shelter",
+      "chapterId": "alpharius_rebuild:home",
+      "title": "把屋子变成家",
+      "description": "检查出入口、床位与储物区。建议使用西西小屋，也允许选择其他据点。此任务手动确认，建筑登记另待实现。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:welcome"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "check",
+          "type": "manual",
+          "prompt": "据点已有床位、储物区和撤离路线。"
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:reserves",
+      "chapterId": "alpharius_rebuild:outage",
+      "title": "城市安静之后",
+      "description": "准备饮水、耐储食物与临时能源。第十四天后仍可补做；本原型由玩家确认，后续拆成物品检测任务。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:shelter",
+        "alpharius_rebuild:basic_tools",
+        "alpharius_rebuild:first_aid"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "prepare",
+          "type": "manual",
+          "prompt": "我已完成停水停电后的基本供应准备。"
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:transport",
+      "chapterId": "alpharius_rebuild:transport",
+      "title": "先学会回来",
+      "description": "检查运输车辆、补给并完成一次物资往返。原型采用手动确认，不能凭持有钥匙推断车辆可靠。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:reserves"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "round_trip",
+          "type": "manual",
+          "prompt": "我已整备车辆并完成首次往返运输。"
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:rv_camp",
+      "chapterId": "alpharius_rebuild:rv",
+      "title": "公路上的第二个家",
+      "description": "可选支线：在兼容房车中准备远征补给。此原型手动确认，未来接入内饰适配；未完成不阻止电网主线。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:transport"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "camp",
+          "type": "manual",
+          "prompt": "房车内饰中已有本次远征需要的补给。"
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:power_skills",
+      "chapterId": "alpharius_rebuild:engineering",
+      "title": "工程师的准备",
+      "description": "达到当前配置的电力维修门槛：电工 7、焊接 4。示例使用配置基线；正式版需读取实际沙盒阈值。",
+      "scope": "character",
+      "dependsOn": [
+        "alpharius_rebuild:transport"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "electrical",
+          "type": "skill",
+          "skill": "electrical",
+          "level": 7
+        },
+        {
+          "id": "metalworking",
+          "type": "skill",
+          "skill": "metalworking",
+          "level": 4
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:power_plant",
+      "chapterId": "alpharius_rebuild:power",
+      "title": "重新转动的机器",
+      "description": "勘察并修复路易斯维尔发电厂。设施运行状态由待实现的 EPR 适配器检测，不以到访代替完成。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:power_skills"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "operational",
+          "type": "adapter",
+          "capability": "epr.facility_operational",
+          "params": {
+            "facilityId": "louisville_plant"
+          }
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:substation",
+      "chapterId": "alpharius_rebuild:power",
+      "title": "把电送回去",
+      "description": "修复马尔德劳变电站。该示例对应西西小屋路线；更换据点时应由适配器解析实际供给区。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:power_plant"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "operational",
+          "type": "adapter",
+          "capability": "epr.facility_operational",
+          "params": {
+            "facilityId": "muldraugh_substation"
+          }
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:home_power",
+      "chapterId": "alpharius_rebuild:power",
+      "title": "回家，开灯",
+      "description": "将登记据点接入公用设施并验收实际电力。需要区分 EPR 供电与临时发电机；据点注册与检测尚待实现。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:substation"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "service",
+          "type": "adapter",
+          "capability": "epr.building_service",
+          "params": {
+            "buildingRef": "registered_home",
+            "service": "power",
+            "source": "restored_grid"
+          }
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:water_skills",
+      "chapterId": "alpharius_rebuild:water",
+      "title": "更大的工程",
+      "description": "达到当前配置的水厂维修门槛：电工 8、焊接 6。后续版本拆出练习、勘察和材料准备任务。",
+      "scope": "character",
+      "dependsOn": [
+        "alpharius_rebuild:home_power"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "electrical",
+          "type": "skill",
+          "skill": "electrical",
+          "level": 8
+        },
+        {
+          "id": "metalworking",
+          "type": "skill",
+          "skill": "metalworking",
+          "level": 6
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:home_water",
+      "chapterId": "alpharius_rebuild:water",
+      "title": "水重新流动",
+      "description": "修复目标供给区的水厂并验收据点供水。水厂角色引用需要适配器解析，不能当作已确认的第三方设施 ID。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:water_skills"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "plant",
+          "type": "adapter",
+          "capability": "epr.facility_operational",
+          "params": {
+            "facilityRef": "water_plant_for_registered_home"
+          }
+        },
+        {
+          "id": "service",
+          "type": "adapter",
+          "capability": "epr.building_service",
+          "params": {
+            "buildingRef": "registered_home",
+            "service": "water",
+            "source": "restored_network"
+          }
+        }
+      ],
+      "rewards": []
+    },
+    {
+      "id": "alpharius_rebuild:life",
+      "chapterId": "alpharius_rebuild:life",
+      "title": "这里仍有生活",
+      "description": "选择一个长期目标：生产、装修、远征站或收藏。终章继续开放世界，不强迫刷满所有支线。",
+      "scope": "world",
+      "dependsOn": [
+        "alpharius_rebuild:home_water"
+      ],
+      "dependencyMode": "all",
+      "tasks": [
+        {
+          "id": "choose",
+          "type": "manual",
+          "prompt": "我已选定下一个家园或探索目标。"
+        }
+      ],
+      "rewards": []
+    }
+  ]
+}

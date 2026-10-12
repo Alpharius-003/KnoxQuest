@@ -1,0 +1,6 @@
+name=Knox Quest - Alpharius Rebuild
+id=KnoxQuestAlpharius
+require=\KnoxQuest
+version=0.1.0-alpha.1
+versionMin=42.21
+description=Rebuilding journal for the Alpharius single-player pack. Missing optional adapters are clearly marked. Does not alter sandbox settings.

@@ -1,0 +1,6 @@
+name=Knox Quest - Starter Journal
+id=KnoxQuestDemo
+require=\KnoxQuest
+version=0.1.0-alpha.1
+versionMin=42.21
+description=Small standalone quest pack demonstrating manual confirmation, inventory checks and saved progress.

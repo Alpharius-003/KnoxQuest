@@ -1,0 +1,6 @@
+name=Knox Quest
+id=KnoxQuest
+version=0.1.0-alpha.1
+versionMin=42.21
+description=Single-player quest journal: chapters, manual/item/skill completion and persistent progress. F7 opens the journal. No game assets included.
+url=https://github.com/Alpharius-003/KnoxQuest
