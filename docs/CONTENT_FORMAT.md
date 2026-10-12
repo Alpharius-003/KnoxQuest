@@ -2,6 +2,8 @@
 
 作者格式采用 JSON，通过 `tools/build_content.py` 生成 Lua 定义，随对应内容模组加载。游戏无需 Python。schemaVersion 仍为 1，新增兼容的 item 类型；旧的任务 ID 保持不变。
 
+JSON 保持可读的 UTF-8 中文。生成器将非 ASCII 字符写成 UTF-8 字节的十进制转义，避免 B42.21 的 Kahlua 词法分析器截断中文；请勿直接修改生成的 Lua 文案。通用界面翻译使用 B42.21 的 `Translate/<语言>/UI.json` 格式。
+
 ## 包字段
 
 `schemaVersion` 固定为整数 1；`packId` 为小写字母开头的命名空间；`packVersion` 为三段数字版本；`title` 为非空说明；`chapters` 和 `quests` 为非空数组。
@@ -17,7 +19,7 @@
 | 类型 | 字段 | 含义 |
 |---|---|---|
 | `manual` | `id`, `type`, `prompt` | 玩家主动确认，必须在 UI 标注 |
-| `skill` | `id`, `type`, `skill`, `level` | 草案支持 `electrical` / `metalworking`，等级 1–10；游戏名称映射待验证 |
+| `skill` | `id`, `type`, `skill`, `level` | 支持 `electrical` / `metalworking`，等级 1–10；B42.21 电工及焊接映射已实测 |
 | `item` | `id`, `type`, `items`, `count` | 按 fullType 列出可替代物品，汇总角色背包及随身容器数量；只检测、不扣除 |
 | `adapter` | `id`, `type`, `capability`, `params` | 请求可选适配器。缺失能力返回 unavailable，绝不自动完成 |
 

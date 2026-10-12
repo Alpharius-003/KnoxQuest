@@ -11,13 +11,15 @@ PACKS = {"vanilla-demo": "KnoxQuestDemo", "alpharius-rebuild": "KnoxQuestAlphari
 def lua(value):
     if isinstance(value, str):
         result = []
-        for char in value:
-            if char in ('"', "\\"):
-                result.append("\\" + char)
-            elif ord(char) < 32:
-                result.append("\\" + str(ord(char)).zfill(3))
+        # Kahlua's lexer truncates raw Unicode reader characters to bytes.
+        # Decimal UTF-8 byte escapes survive both Kahlua and standard Lua 5.1.
+        for byte in value.encode("utf8"):
+            if byte in (34, 92):
+                result.append("\\" + chr(byte))
+            elif byte < 32 or byte >= 127:
+                result.append("\\" + str(byte).zfill(3))
             else:
-                result.append(char)
+                result.append(chr(byte))
         return '"' + "".join(result) + '"'
     if isinstance(value, bool):
         return "true" if value else "false"

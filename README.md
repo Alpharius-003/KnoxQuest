@@ -12,6 +12,8 @@ A data-driven, single-player quest journal for Project Zomboid.
 
 开发与测试目标为 **Build 42.21.x 单人环境**，不承诺整个 B42 系列兼容。
 
+**Viewpoint 已知问题：** 测试配置直接进入 3D 后，窗口背景可能遮住文字。测试中切到游戏原生俯视视角，再切回 3D 可恢复显示；也可在原生视角查看任务。此兼容问题尚未根治，模组不会自动更改你的视角或图形设置。关闭汉化没有消除该现象。
+
 ## 安装与游玩
 
 1. 退出游戏，将 `mods/KnoxQuest` 放到游戏用户目录的 `mods` 中。
@@ -32,7 +34,7 @@ python tools/install_local.py --profile "YOUR_PZ_PROFILE" --save "Sandbox/YOUR_S
 
 ## 项目边界
 
-- **Knox Quest Core**：章节、任务关系、条件判定、进度、奖励记录、界面、翻译和内容注册。
+- **Knox Quest Core**：章节、任务关系、条件判定、进度、界面、翻译和内容注册。
 - **Vanilla Demo**：不依赖第三方模组的最小教学任务包，也是核心回归测试入口。
 - **Alpharius Rebuild**：据点、运输、房车远征、修复电网、恢复供水与长期经营。
 - **可选适配器**：连接 EPR、房车及其他模组。第三方依赖失效时显示原因，不伪造任务完成。
@@ -50,7 +52,7 @@ python tools/build_content.py --check
 python -m unittest discover -s tests -v
 ```
 
-编辑 JSON 后运行 `python tools/build_content.py` 生成随模组分发的 Lua 任务数据。游戏端不需要 Python，也不直接读取 JSON。Core 不分发或读取游戏安装资源。
+编辑 JSON 后运行 `python tools/build_content.py` 生成随模组分发的 Lua 任务数据。游戏端不需要 Python，也不直接读取任务 JSON。界面调用游戏现有 UI 与纹理 API，不分发游戏资源。
 
 ## 阅读顺序
 

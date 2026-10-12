@@ -24,6 +24,8 @@ def main():
             continue
         if path.is_absolute() or ".." in path.parts or (name not in TOP and path.parts[0] not in DIRS):
             errors.append(name + ": outside publication allowlist")
+        if path.parts[0]=="mods" and (len(path.parts)<3 or path.parts[1] not in {"KnoxQuest", "KnoxQuestDemo", "KnoxQuestAlpharius"}):
+            errors.append(name + ": not an original Knox Quest module")
         if name not in TOP and path.name != ".gitkeep" and path.suffix not in EXTENSIONS:
             errors.append(name + ": unexpected file type")
         data = subprocess.check_output(["git", "cat-file", "blob", sha], cwd=ROOT)

@@ -12,6 +12,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ContentValidationTests(unittest.TestCase):
+    def test_b42_json_translations_are_complete(self):
+        root = ROOT / "mods/KnoxQuest/42/media/lua/shared/Translate"
+        english = json.loads((root / "EN/UI.json").read_text(encoding="utf8"))
+        chinese = json.loads((root / "CN/UI.json").read_text(encoding="utf8"))
+        self.assertEqual(set(english), set(chinese))
+        self.assertIn("UI_KQ_Title", chinese)
+        for data in (english, chinese):
+            self.assertTrue(all(key.startswith("UI_KQ_") and isinstance(value, str) and value for key, value in data.items()))
+
     def setUp(self):
         self.pack = load_pack(ROOT / "content" / "vanilla-demo.json")
 

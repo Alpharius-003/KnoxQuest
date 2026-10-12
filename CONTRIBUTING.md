@@ -1,6 +1,6 @@
 # 贡献指南
 
-项目当前处于设计与数据原型阶段。请先说明玩家遇到的问题、复现环境和预期体验，再提出实现方式。
+项目当前处于首个单人 alpha 阶段。请先说明玩家遇到的问题、复现环境和预期体验，再提出实现方式。
 
 ## 提交范围
 
@@ -15,7 +15,9 @@
 ## 提交前检查
 
 ```sh
+python -m pip install -r requirements-dev.txt
 python tools/validate_content.py
+python tools/build_content.py --check
 python -m unittest discover -s tests -v
 ```
 

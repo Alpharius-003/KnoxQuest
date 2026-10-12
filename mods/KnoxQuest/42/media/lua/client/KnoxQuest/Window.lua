@@ -10,6 +10,28 @@ local W = KnoxQuestWindow
 local function tr(key) return getText("UI_KQ_"..key) end
 local function safe(text) return tostring(text or ""):gsub("<","["):gsub(">","]") end
 local function statusName(status) return tr("State_"..status) end
+local function itemLabel(task)
+    local names={}
+    for _,fullType in ipairs(task.items) do names[#names+1]=getItemNameFromFullType(fullType) or fullType end
+    return table.concat(names," / ").." x"..task.count
+end
+
+-- Kahlua strings use Java character indices. Explicit measured line breaks
+-- keep CJK paragraphs inside the detail pane even without spaces between words.
+local function wrapped(value,width)
+    local text=safe(value)
+    local lines,line={},""
+    for index=1,#text do
+        local char=text:sub(index,index)
+        if char=="\n" then
+            lines[#lines+1]=line;line=""
+        elseif line~="" and getTextManager():MeasureStringX(UIFont.Medium,line..char)>width then
+            lines[#lines+1]=line;line=char
+        else line=line..char end
+    end
+    lines[#lines+1]=line
+    return table.concat(lines," <LINE> ")
+end
 
 local function drawRow(list,y,item,alt)
     if list.selected==item.index then list:drawRect(1,y,list.width-2,item.height,0.85,0.15,0.27,0.25)
@@ -111,16 +133,17 @@ function W:sync()
     local quest=K.quests[self.selectedQuest]
     if not quest then return end
     local result=K.inspect(quest.id,context)
-    local parts={"<H2> "..safe(quest.title),"<LINE> <TEXT> "..safe(statusName(result.status)),"<LINE> "..safe(quest.description),"<LINE> <H2> "..tr("Objectives")}
+    local function text(value) return wrapped(value,self.detail.width-44) end
+    local parts={"<H2> "..text(quest.title),"<LINE> <TEXT> "..text(statusName(result.status)),"<LINE> "..text(quest.description),"<LINE> <H2> "..tr("Objectives")}
     local canConfirm=false
     for index, task in ipairs(quest.tasks) do
         local check=result.tasks[index] or {status="met"}
-        local label=task.prompt or (task.type=="skill" and (tr("Skill_"..task.skill).." "..task.level)) or (task.type=="item" and table.concat(task.items," / ").." x"..task.count) or task.capability
+        local label=task.prompt or (task.type=="skill" and (tr("Skill_"..task.skill).." "..task.level)) or (task.type=="item" and itemLabel(task)) or task.capability
         local count=check.current and (" ("..check.current.."/"..check.target..")") or ""
-        table.insert(parts,"<LINE> <TEXT> "..(check.status=="met" and "[+] " or "[ ] ")..safe(label)..count)
+        table.insert(parts,"<LINE> <TEXT> "..text((check.status=="met" and "[+] " or "[ ] ")..label..count))
         if task.type=="manual" and check.status~="met" then canConfirm=true end
         if check.status=="unavailable" or check.status=="error" then
-            table.insert(parts,"<LINE> "..safe(statusName(check.status))..": "..safe(check.detail))
+            table.insert(parts,"<LINE> "..text(statusName(check.status)..": "..tostring(check.detail)))
         end
     end
     if #quest.dependsOn>0 then
@@ -129,9 +152,9 @@ function W:sync()
             table.insert(parts,"<LINE> <TEXT> "..(K.isCompleted(id,context) and "[+] " or "[ ] ")..safe(K.quests[id].title))
         end
     end
-    table.insert(parts,"<LINE> <TEXT> "..tr("Scope_"..quest.scope))
-    table.insert(parts,"<LINE> "..tr("NoRewards"))
-    if result.status=="unavailable" then table.insert(parts,"<LINE> "..tr("MissingAdapter")) end
+    table.insert(parts,"<LINE> <TEXT> "..text(tr("Scope_"..quest.scope)))
+    table.insert(parts,"<LINE> "..text(tr("NoRewards")))
+    if result.status=="unavailable" then table.insert(parts,"<LINE> "..text(tr("MissingAdapter"))) end
     local body=table.concat(parts," ")
     if body~=self.lastBody then
         local scroll=self.detail:getYScroll()
@@ -163,8 +186,8 @@ end
 
 function W:new()
     local sw,sh=getCore():getScreenWidth(),getCore():getScreenHeight()
-    local width=math.min(sw-40,math.max(1040,math.min(1600,sw*0.72)))
-    local height=math.min(sh-60,math.max(640,math.min(1000,sh*0.8)))
+    local width=math.floor(math.min(sw-40,math.max(1040,math.min(1600,sw*0.72))))
+    local height=math.floor(math.min(sh-60,math.max(640,math.min(1000,sh*0.8))))
     local o=ISCollapsableWindow.new(self,(sw-width)/2,(sh-height)/2,width,height)
     o.title=tr("Title");o.resizable=false
     o.backgroundColor={r=0.035,g=0.055,b=0.065,a=0.98}
@@ -192,6 +215,7 @@ end)
 -- Tiny text-only tracker; no external textures or UI assets.
 KnoxQuestTracker=ISPanel:derive("KnoxQuestTracker")
 function KnoxQuestTracker:render()
+    if K.window and K.window:getIsVisible() then return end
     local context=K.getContext()
     if not context or #context.character.tracked==0 then return end
     local fh=getTextManager():getFontHeight(UIFont.Small)
@@ -207,6 +231,6 @@ end
 Events.OnGameStart.Add(function()
     if not K.runtime.ready then return end
     if K.tracker then K.tracker:removeFromUIManager() end
-    K.tracker=KnoxQuestTracker:new(getCore():getScreenWidth()-390,150,360,180)
+    K.tracker=KnoxQuestTracker:new(getCore():getScreenWidth()-390,math.min(420,getCore():getScreenHeight()-200),360,180)
     K.tracker:initialise();K.tracker.background=false;K.tracker:addToUIManager()
 end)

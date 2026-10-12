@@ -1,5 +1,6 @@
 """Run the actual shipped core with Lua 5.1, not a Python reimplementation."""
 from pathlib import Path
+import json
 import unittest
 from lupa.lua51 import LuaRuntime
 
@@ -18,6 +19,17 @@ class LuaCoreTests(unittest.TestCase):
 
     def run_lua(self, source):
         self.lua.execute(source)
+
+    def test_generated_text_survives_byte_based_lexer(self):
+        for name, filename in (("KnoxQuestDemo", "vanilla-demo"), ("KnoxQuestAlpharius", "alpharius-rebuild")):
+            source = (ROOT / f"mods/{name}/42/media/lua/shared/{name}_Content.lua").read_text(encoding="ascii")
+            self.assertNotIn("\x00", source)
+            pack = json.loads((ROOT / f"content/{filename}.json").read_text(encoding="utf8"))
+            loaded = self.lua.globals().KnoxQuest.packs[pack["packId"]]
+            self.assertEqual(pack["title"], loaded.title)
+            for index, quest in enumerate(pack["quests"], 1):
+                self.assertEqual(quest["title"], loaded.quests[index].title)
+                self.assertEqual(quest["description"], loaded.quests[index].description)
 
     def test_manual_completion_and_gating(self):
         self.run_lua('''
